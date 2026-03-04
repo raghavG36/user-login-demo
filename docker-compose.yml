@@ -1,0 +1,18 @@
+# Local development and single-service run
+# Usage: docker-compose up --build
+services:
+  api:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SECRET_KEY=${SECRET_KEY:-dev-secret-change-in-production-min-32-chars}
+      - ACCESS_TOKEN_EXPIRE_MINUTES=${ACCESS_TOKEN_EXPIRE_MINUTES:-30}
+      - DATABASE_URL=${DATABASE_URL:-sqlite+aiosqlite:///./app.db}
+      - ENVIRONMENT=${ENVIRONMENT:-development}
+      - PORT=8080
+    volumes:
+      # Mount app for live reload during development (optional)
+      - ./app:/app/app:ro
+    env_file:
+      - .env

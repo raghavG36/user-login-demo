@@ -1,0 +1,256 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #0f0f12;
+  --surface: #1a1a20;
+  --border: #2a2a32;
+  --text: #e8e8ec;
+  --muted: #8888a0;
+  --accent: #6366f1;
+  --accent-hover: #818cf8;
+  --error: #ef4444;
+  --success: #22c55e;
+  /* Minimum touch target (Apple HIG / Material ~44px) */
+  --touch-min: 44px;
+  --safe-top: env(safe-area-inset-top, 0);
+  --safe-right: env(safe-area-inset-right, 0);
+  --safe-bottom: env(safe-area-inset-bottom, 0);
+  --safe-left: env(safe-area-inset-left, 0);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding-left: var(--safe-left);
+  padding-right: var(--safe-right);
+  padding-bottom: var(--safe-bottom);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+input, button, select {
+  font: inherit;
+  font-size: 16px; /* Prevents iOS zoom on focus */
+}
+
+button {
+  cursor: pointer;
+  min-height: var(--touch-min);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+  padding-left: calc(1.5rem + var(--safe-left));
+  padding-right: calc(1.5rem + var(--safe-right));
+}
+
+@media (min-width: 480px) {
+  .container {
+    padding: 1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  min-height: var(--touch-min);
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.btn {
+  padding: 0.6rem 1rem;
+  min-height: var(--touch-min);
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background 0.15s;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+  width: 100%;
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+}
+
+.btn-secondary {
+  background: var(--border);
+  color: var(--text);
+}
+
+.btn-secondary:hover {
+  background: #3a3a44;
+}
+
+.error-msg {
+  color: var(--error);
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.success-msg {
+  color: var(--success);
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  padding-top: calc(0.75rem + var(--safe-top));
+  padding-left: calc(1rem + var(--safe-left));
+  padding-right: calc(1rem + var(--safe-right));
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1rem;
+}
+
+.nav a {
+  color: var(--muted);
+  min-height: var(--touch-min);
+  display: inline-flex;
+  align-items: center;
+  padding: 0 0.25rem;
+}
+
+.nav a:hover,
+.nav a.active {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.nav .spacer {
+  flex: 1;
+  min-width: 0.5rem;
+}
+
+.nav .btn {
+  min-height: 36px;
+  padding: 0.4rem 0.75rem;
+}
+
+@media (min-width: 480px) {
+  .nav {
+    padding: 1rem 1.5rem;
+    padding-top: 1rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .nav .btn {
+    min-height: var(--touch-min);
+    padding: 0.6rem 1rem;
+  }
+}
+
+.page-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.action-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  padding-left: var(--safe-left);
+  padding-right: var(--safe-right);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.95rem;
+  min-height: var(--touch-min);
+}
+
+.action-row:last-child {
+  border-bottom: none;
+}
+
+.action-op {
+  font-family: ui-monospace, monospace;
+  color: var(--accent);
+  word-break: break-all;
+  flex: 1;
+  min-width: 0;
+}
+
+.action-result {
+  font-weight: 600;
+  color: var(--success);
+  flex-shrink: 0;
+}
+
+@media (max-width: 360px) {
+  .action-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+}
+
+.empty-state {
+  color: var(--muted);
+  text-align: center;
+  padding: 2rem;
+}

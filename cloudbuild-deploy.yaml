@@ -1,0 +1,62 @@
+# Cloud Build: build image, push to Artifact Registry, deploy to Cloud Run.
+# Use this file for CI/CD (e.g. trigger on merge to main).
+#
+# One-time: set env vars (SECRET_KEY, DATABASE_URL, etc.) on the Cloud Run
+# service in GCP Console or via gcloud, or use Secret Manager with
+# --set-secrets in the deploy step. This config only updates the image.
+#
+# Trigger substitution vars (optional): _REGION, _REPO_NAME, _IMAGE_NAME, _SERVICE_NAME
+
+substitutions:
+  _REGION: us-central1
+  _REPO_NAME: fastapi-apps
+  _IMAGE_NAME: fastapi-user-login
+  _SERVICE_NAME: fastapi-user-login
+
+steps:
+  # Build and tag image
+  - name: gcr.io/cloud-builders/docker
+    id: build
+    args:
+      - build
+      - -t
+      - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_IMAGE_NAME}:$SHORT_SHA
+      - -t
+      - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_IMAGE_NAME}:latest
+      - .
+
+  # Push both tags
+  - name: gcr.io/cloud-builders/docker
+    id: push
+    args:
+      - push
+      - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_IMAGE_NAME}:$SHORT_SHA
+  - name: gcr.io/cloud-builders/docker
+    id: push-latest
+    args:
+      - push
+      - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_IMAGE_NAME}:latest
+
+  # Deploy to Cloud Run (uses image just pushed; env vars are already on the service)
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    id: deploy
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - ${_SERVICE_NAME}
+      - --image
+      - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_IMAGE_NAME}:$SHORT_SHA
+      - --region
+      - ${_REGION}
+      - --platform
+      - managed
+      - --allow-unauthenticated
+    waitFor: [push, push-latest]
+
+images:
+  - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_IMAGE_NAME}:$SHORT_SHA
+  - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_IMAGE_NAME}:latest
+
+options:
+  logging: CLOUD_LOGGING_ONLY
