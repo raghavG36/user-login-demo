@@ -5,7 +5,7 @@ from fastapi import HTTPException, status
 
 from app.api.calculator.schemas import CalculatorOperands, CalculatorResult
 
-
+//test
 def add(operands: CalculatorOperands) -> CalculatorResult:
     """Return a + b."""
     return CalculatorResult(
