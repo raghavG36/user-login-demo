@@ -9,7 +9,7 @@ on:
 
 env:
   REGION: asia-south1
-  REPO_NAME: fastapi-apps
+  REPO_NAME: user-login-demo
   IMAGE_NAME: fastapi-user-login
   SERVICE_NAME: fastapi-user-login
 
